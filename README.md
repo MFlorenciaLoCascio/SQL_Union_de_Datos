@@ -125,6 +125,8 @@ USING (code)
 ORDER BY Language;
 ```
 
+### FULL JOIN 
+
 
 ## 3️⃣ Teoría de conjuntos para uniones de SQL
 
