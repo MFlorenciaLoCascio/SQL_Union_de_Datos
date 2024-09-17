@@ -12,7 +12,72 @@ Aprenderás a trabajar con más de una tabla en SQL; a utilizar uniones internas
 
 Conocerás el concepto de unión de tablas y explorarás todas las formas en las que puedes enriquecer tus consultas utilizando uniones, empezando por las uniones internas.
 
+### INNER JOIN
+-- Selecciona todas las columnas de cities
+
 ```
+SELECT * 
+FROM cities;
+```
+#### Unir con tablas con alias
+
+```
+-- Selecciona campos con alias
+SELECT c.code AS country_code, c.name, e.year, e.inflation_rate
+FROM countries AS c
+-- Unir a economies (alias e)
+INNER JOIN economies AS e
+-- Une usando code y los alias de las tablas
+ON c.code = e.code;
+```
+
+#### USING 
+
+```
+SELECT c.name AS country, l.name AS language, official
+FROM countries AS c
+INNER JOIN languages AS l
+-- Une usando la columna code
+USING(code);
+```
+
+### Definir Relaciones
+
+```
+-- Seleccione los nombres de países e idiomas, con alias
+SELECT c.name AS country, l.name AS language
+-- From countries (con alias)
+FROM countries AS c 
+-- Inner join a languages (con alias)
+INNER JOIN languages AS l
+-- Usa code como campo de unión con la palabra clave USING
+USING(code);
+```
+
+### Uniones Múltiples
+
+Tu tarea en este ejercicio es unir tablas para obtener el nombre del país, el año, la tasa de fertilidad y la tasa de desempleo en un único resultado a partir de las tablas countries, populations y economies.
+
+```
+-- Selecciona los campos pertinentes
+SELECT name, year, fertility_rate
+FROM countries AS c 
+-- Inner join countries y populations, con alias, uniendo en code
+INNER JOIN populations AS p
+ON c.code = p.country_code;
+```
+
+### Comprobación de uniones multitabla
+
+```
+SELECT name, e.year, fertility_rate, unemployment_rate
+FROM countries AS c
+INNER JOIN populations AS p
+ON c.code = p.country_code
+INNER JOIN economies AS e
+ON c.code = e.code
+-- Agrega una condición de unión adicional para que también se una con `year`
+AND e.year = p.year;
 ```
 
 ## 2️⃣ Uniones externas, uniones cruzadas y autouniones
