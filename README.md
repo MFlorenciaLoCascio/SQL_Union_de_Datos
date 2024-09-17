@@ -84,6 +84,47 @@ AND e.year = p.year;
 
 Aprenderás sobre las uniones cruzadas y las situaciones en las que puedes unir una tabla consigo misma.
 
+### LEFT Y RIGHT JOING 
+
+-- Realiza una union interna con cities AS c1 a la izquierda y countries as c2 a la derecha. Utiliza code como campo por el que fusionar tus tablas.
+
+```
+SELECT
+c1.name AS city,
+code
+c2.name AS country,
+region,
+city_proper_pop
+FROM cities AS c1
+-- Realiza una inner join con cities as c1 y countries as c2 uniendo en country code
+INNER JOIN countries As c2
+ON c1.country_code = c2.code
+ORDER BY code DESC;
+```
+
+-- Completa la LEFT JOIN con la tabla countries a la izquierda y la tabla econonies a la derecha en el campo code. Filtra los registros desde year 2010.
+
+```
+SELECT name, region, gdp_percapita
+FROM countries AS c
+LEFT JOIN economies AS e
+-- Uniendo con el campo code
+ON c.code = e.code
+-- Filtra para year 2010
+WHERE year = 2010;
+```
+
+-- Escribe una nueva consulta utilizando RIGHT JOIN que produzca un resultado identico al de la LEFT JOIN proporcionada.
+
+```
+F- Modifica esta consulta para usar RIGHT JOIN en Lugar de LEFT JOIN
+SELECT countries.name AS country, Languages.name AS language, percent
+FROM Languages
+RIGHT JOIN countries
+USING (code)
+ORDER BY Language;
+```
+
 
 ## 3️⃣ Teoría de conjuntos para uniones de SQL
 
