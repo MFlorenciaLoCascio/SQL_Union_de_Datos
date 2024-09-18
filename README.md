@@ -179,7 +179,7 @@ ORDER BY Life_expectancy ASC
 LIMIT 5;
 ```
 
-#### Comparar una tabla consigo misma
+### Comparar una tabla consigo misma
 
 -- Realiza una unión interna de populations consigo misma aplicando ON a country_code , alias p1 y p2, respectivamente. Selecciona country_code de p1 y el campo size tanto de p1 como de p2 , asignando a p1.size el alias size2010 y a p2.size el alias size2015 (en ese orden).
 
@@ -195,6 +195,59 @@ USING (country_code)
 ## 3️⃣ Teoría de conjuntos para uniones de SQL
 
 Aprenderás a utilizar las operaciones de la teoría de conjuntos en SQL, con una introducción a las cláusulas UNION, UNION ALL, INTERSECT y EXCEPT. Explorarás las formas predominantes en las que las operaciones de la teoría de conjuntos difieren de las operaciones de unión.
+
+### UNION: no devuelve duplicados
+
+En este ejercicio, tienes a tu disposición dos tablas, economies2015 y economies2019, en las pestañas de la consola. Realizarás una operación de conjuntos para apilar todos los registros de estas dos tablas unos sobre otros, excluyendo los duplicados.
+
+```
+-- Selecciona todos los campos de economies2015
+SELECT *
+FROM economies2015
+-- Operacion de conjuntos
+UNION
+-- Selecciona todos los campos de economies2019
+SELECT *
+FROM economies2019
+ORDER BY code, year;
+```
+
+Realiza una operación de conjuntos adecuada que determine todos los pares de código de país y año (en ese orden) de economies y populations , excluyendo los duplicados. Ordena por código de país y año.
+
+```
+-- Consulta que determina todos los pares de code y year de economies y populations, sin duplicados
+SELECT code, year
+FROM economies
+UNION
+SELECT country_code, year
+FROM populations
+ORDER BY code, year;
+```
+
+### UNION ALL: devuelve duplicados
+
+### INTERSECT: 
+
+```
+-- Devuelve todas las ciudades con el mismo nombre que un pais
+SELECT name
+FROM countries
+INTERSECT
+SELECT name
+FROM cities;
+```
+
+### EXCEPT 
+
+```
+-- Devuelve todas las ciudades que no tienen el mismo nombre que un pais
+SELECT name
+FROM cities
+EXCEPT
+SELECT name
+FROM countries
+ORDER BY name;
+```
 
 ## 4️⃣ Subconsultas
 
