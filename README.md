@@ -329,3 +329,28 @@ WHERE (gov_form LIKE '%Republic%' OR gov_form LIKE '%Monarchy%'))
 ORDER BY inflation_rate;
 ```
 
+-- En cities, selecciona el nombre de ciudad, el codigo de pais, la poblacion de la ciudad propiamente dicha y la poblacion del area metropolitana, asi como el campo city_perc, que calcula la población de la ciudad propiamente dicha como porcentaje de la población del área metropolitana para cada ciudad. 
+Filtra el nombre de ciudad con una subconsulta que seleccione ciudades capital en countries de 'Europe' o continentes con 'America" al final de su nombre.
+Excluye los valores NULL en metroarea_pop
+Ordena por city_perc (de mas a menos) y obten solo las 10 primeras filas.
+
+```
+SELECT
+name
+country_code,
+city_proper_pop,
+metroarea_pop,
+(city_proper_pop
+FROM cities
+-- Usa una subconsulta para filtrar el name de la ciudad
+WHERE name IN (
+SELECT capital
+FROM countries
+WHERE continent LIKE 'Europe%' OR continent LIKE '%America%'
+
+-- Agrega una condición de filtro tal que metroarea_pop no tenga valores nulos
+AND metroarea_pop IS NOT NULL
+-- Ordena por city_perc en orden descendente y limita el resultado
+ORDER BY city_perc DESC
+LIMIT 10;
+```
