@@ -252,3 +252,80 @@ ORDER BY name;
 ## 4️⃣ Subconsultas
 
 Empezarás investigando las semiuniones y las antiuniones. A continuación, aprenderás a utilizar las consultas anidadas. Por último, pero no por ello menos importante, terminarás el curso con algunos desafíos.
+
+### SEMI UNION
+
+Supongamos que te interesa identificar los idiomas hablados en Oriente Medio. La tabla Languages contiene informacion sobre idiomas y paises, pero no te dice a que region pertenecen los paises. Puedes construir una semiunion filtrando la tabla countries por una region concreta y, a continuación, utilizarla para filtrar la tabla Languages.
+
+```
+-- Selecciona el code de país para los países de Middle East
+SELECT code
+FROM countries
+WHERE region = 'Middle East';
+```
+
+### SUBCONSULTAS DENTRO DE WHERE
+
+-- Empieza calculando la esperanza de vida media a partir de la tabla populations. Filtra tu respuesta para utilizar solo registros de 2015.
+
+```
+-- Selecciona el promedio de Life_expectancy de la tabla populations
+SELECT AVG(Life_expectancy)
+FROM populations
+-- Filtrar por year 2015
+WHERE year = 2015;
+```
+
+-- Obten name, country_code y urbanarea_pop de todas las capitales (sin alias).
+
+```
+-- Selecciona los campos relevantes de la tabla cities
+SELECT name, country_code, urbanarea_pop
+FROM cities
+-- Filtra mediante una subconsulta en la tabla countries
+WHERE name IN
+(SELECT capital
+FROM countries)
+ORDER BY urbanarea_pop DESC;
+```
+
+### SUBCONSULTAS DENTRO DE SELECT
+
+Escribe una LEFT JOIN con countries a la izquierda y cities a la derecha, aplicando Join On al código de país. En la declaracion SELECT de tu union, incluye los nombres de pais como country y cuenta las ciudades de cada pais, alias cities_num. Ordena por cities_num (de mas a menos) y country (de menos a mas), limitandote a los nueve primeros registros.
+
+```
+SELECT countries.name AS country, COUNT(*) AS cities_num
+FROM countries
+LEFT JOIN cities
+ON countries.code = cities.country_code
+GROUP BY countries.name
+ORDER BY cities_num DESC, country
+LIMIT 9;
+```
+
+### SUBCONSULTAS DENTRO DE FROM
+
+Empieza con una consulta que agrupe por cada code de pais de Languages y cuente los idiomas habladas en cada pais como Lang_num. En tu declaracion SELECT , obten code y Lang_nun (en ese orden).
+
+```
+-- Selecciona code y el numero de idiomas como lang_num
+SELECT code, COUNT (name) AS Lang_num
+FROM Languages
+GROUP BY code;
+```
+
+-- Selecciona code , inflation_rate y unemployment_rate de pais en economies. Filtra code por el conjunto de paises que contienen las palabras "Republic" o "Monarchy" en su gov_form.
+
+```
+-- Selecciona Los campos pertinentes
+SELECT code, inflation_rate, unemployment_rate
+FROM economies
+WHERE year = 2015
+AND code NOT IN
+-- Subconsulta que devuelve los code de país filtrados en gov_form
+(SELECT code
+FROM countries
+WHERE (gov_form LIKE '%Republic%' OR gov_form LIKE '%Monarchy%'))
+ORDER BY inflation_rate;
+```
+
